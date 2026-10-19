@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<section class="hero" aria-labelledby="hero-title">
+  <div class="container hero-inner">
+    <div class="hero-text reveal">
+      {% if profile.status %}
+        <p class="status"><span class="status-dot" aria-hidden="true"></span>{{ profile.status }}</p>
+      {% endif %}
+      <h1 id="hero-title"><span class="gradient-text">{{ profile.name }}</span><span class="hero-role accent-text">{{ profile.role }}</span></h1>
+      {# TODO: rewrite this intro in your own words. #}
+      <p class="lead">I build practical web apps with Django: booking systems that take real payments, private workspaces for teams, and the tests that keep them working.</p>
+      <div class="actions">
+        <a class="button" href="#projects">View my work <span class="icon-shift">{% include "includes/icon.html" with name="arrow-right" %}</span></a>
+        <a class="button button-ghost" href="#contact">Get in touch</a>
+      </div>
+    </div>
+    <div class="headshot-frame reveal" style="--reveal-delay: 0.15s">
+      <img class="headshot" src="{% static 'img/headshot.webp' %}" alt="Portrait of {{ profile.name }}" width="480" height="480" fetchpriority="high">
+    </div>
+  </div>
+</section>
+
+<section id="projects" class="section section-screen" aria-labelledby="projects-title">
+  <div class="container">
+    <div class="section-head reveal">
+      <p class="section-index">Work</p>
+      <h2 id="projects-title">Selected projects</h2>
+      <p>Production Django apps, deployed and running. Open one for the full story.</p>
+    </div>
+    {% if projects %}
+      <div class="project-list">
+        {% for project in projects %}
+          {% include "includes/project_row.html" with number=forloop.counter %}
+        {% endfor %}
+      </div>
+      <a class="more-link reveal" href="{{ profile.github_url }}" target="_blank" rel="me noopener">
+        {% include "includes/icon.html" with name="github" %}
+        <span>More of my code lives on GitHub</span>
+        <span class="icon-shift">{% include "includes/icon.html" with name="arrow-up-right" %}</span>
+      </a>
+    {% else %}
+      <p class="muted">Projects are on their way.</p>
+    {% endif %}
+  </div>
+</section>
+
+<section id="about" class="section section-screen" aria-labelledby="about-title">
+  <div class="container about">
+    <div class="about-text reveal">
+      <p class="section-index">About</p>
+      <h2 id="about-title">Reliable software, built with care.</h2>
+      {# TODO: replace these two placeholder paragraphs with your own bio. #}
+      <p>I'm a Django developer who enjoys turning real business problems into reliable web apps. I care about the details that make software trustworthy: data that stays isolated between customers, permissions that match how teams actually work, and tests that catch problems before users do.</p>
+      <p>Most of my work is server-rendered Django with PostgreSQL, background jobs where they're needed, and just enough JavaScript to make the interface feel quick. I like shipping small, steady improvements and deploying them early.</p>
+    </div>
+    <div class="skills reveal" style="--reveal-delay: 0.1s">
+      {% for group, items in skills %}
+        <div class="skill-group">
+          <h3>{{ group }}</h3>
+          <ul class="tags">
+            {% for item in items %}<li>{{ item }}</li>{% endfor %}
+          </ul>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section id="contact" class="section section-screen" aria-labelledby="contact-title">
+  <div class="container contact">
+    <div class="contact-intro reveal">
+      <p class="section-index">Contact</p>
+      <h2 id="contact-title">Let's build something.</h2>
+      <p>Have a project in mind or a role to discuss? Send me a message and I'll reply by email.</p>
+      <ul class="contact-links">
+        <li><a href="mailto:{{ profile.email }}">{% include "includes/icon.html" with name="mail" %} {{ profile.email }}</a></li>
+        <li><a href="{{ profile.github_url }}" target="_blank" rel="me noopener">{% include "includes/icon.html" with name="github" %} GitHub</a></li>
+        <li><a href="{{ profile.linkedin_url }}" target="_blank" rel="me noopener">{% include "includes/icon.html" with name="linkedin" %} LinkedIn</a></li>
+      </ul>
+    </div>
+
+    <div class="contact-form-wrap reveal" style="--reveal-delay: 0.1s">
+      {% for message in messages %}
+        <p class="alert alert-{{ message.tags }}" role="status">{{ message }}</p>
+      {% endfor %}
+
+      {% with form=contact_form %}
+      <form class="contact-form" method="post" action="{% url 'contact:submit' %}" novalidate>
+        {% csrf_token %}
+        {% if form.non_field_errors %}
+          <div class="alert alert-error" role="alert">
+            {% for error in form.non_field_errors %}<p>{{ error }}</p>{% endfor %}
+          </div>
+        {% endif %}
+
+        {% for field in form %}
+          {% if field.name == "website" %}
+            <div class="honeypot" aria-hidden="true">
+              <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+              <input type="text" name="{{ field.html_name }}" id="{{ field.id_for_label }}" tabindex="-1" autocomplete="off">
+            </div>
+          {% else %}
+            <div class="field{% if field.errors %} has-error{% endif %}">
+              <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+              {{ field }}
+              {% if field.errors %}
+                <div class="field-error" id="{{ field.auto_id }}_error">
+                  {% for error in field.errors %}<p>{{ error }}</p>{% endfor %}
+                </div>
+              {% endif %}
+            </div>
+          {% endif %}
+        {% endfor %}
+
+        <button class="button" type="submit">Send message <span class="icon-shift">{% include "includes/icon.html" with name="arrow-right" %}</span></button>
+      </form>
+      {% endwith %}
+    </div>
+  </div>
+</section>
+{% endblock %}

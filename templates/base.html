@@ -1,0 +1,48 @@
+{% load static %}<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}{{ profile.name }} · {{ profile.role }}{% endblock %}</title>
+  <meta name="description" content="{% block meta_description %}{{ profile.name }} is a Django developer building practical web apps.{% endblock %}">
+  <link rel="canonical" href="{{ site_origin }}{{ request.path }}">
+  <meta name="color-scheme" content="dark light">
+  <meta name="theme-color" content="#0a0a0b">
+
+  <meta property="og:site_name" content="{{ profile.name }}">
+  <meta property="og:type" content="{% block og_type %}website{% endblock %}">
+  <meta property="og:title" content="{% block og_title %}{{ profile.name }} · {{ profile.role }}{% endblock %}">
+  <meta property="og:description" content="{% block og_description %}{{ profile.name }} is a Django developer building practical web apps.{% endblock %}">
+  <meta property="og:url" content="{{ site_origin }}{{ request.path }}">
+  <meta property="og:image" content="{{ site_origin }}{% block og_image %}{% static 'img/headshot.webp' %}{% endblock %}">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="icon" href="{% static 'favicon.svg' %}" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="{% static 'img/apple-touch-icon.png' %}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap">
+  <link rel="stylesheet" href="{% static 'css/site.css' %}">
+  {# Loaded in <head> (not deferred) so the saved theme applies before first paint. #}
+  <script src="{% static 'js/site.js' %}"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+  {% include "includes/nav.html" %}
+
+  <main id="main" tabindex="-1">
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p>&copy; {% now "Y" %} {{ profile.name }} <span class="footer-note">· Built with Django</span></p>
+      <ul class="social-links" aria-label="Elsewhere">
+        <li><a href="mailto:{{ profile.email }}" aria-label="Email">{% include "includes/icon.html" with name="mail" %}</a></li>
+        <li><a href="{{ profile.github_url }}" aria-label="GitHub" rel="me noopener" target="_blank">{% include "includes/icon.html" with name="github" %}</a></li>
+        <li><a href="{{ profile.linkedin_url }}" aria-label="LinkedIn" rel="me noopener" target="_blank">{% include "includes/icon.html" with name="linkedin" %}</a></li>
+      </ul>
+    </div>
+  </footer>
+</body>
+</html>

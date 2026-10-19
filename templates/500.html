@@ -1,0 +1,23 @@
+{% load static %}<!doctype html>
+{# Rendered without a request context, so it doesn't extend base.html. #}
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Server error</title>
+  <meta name="robots" content="noindex">
+  <meta name="color-scheme" content="light dark">
+  <link rel="icon" href="{% static 'favicon.svg' %}" type="image/svg+xml">
+  <link rel="stylesheet" href="{% static 'css/site.css' %}">
+</head>
+<body>
+  <main id="main" class="section error-page">
+    <div class="container narrow">
+      <p class="eyebrow">Error 500</p>
+      <h1>Something went wrong</h1>
+      <p class="lead">Sorry, there was a problem on my end. Please try again in a moment.</p>
+      <a class="button" href="/">Back to home</a>
+    </div>
+  </main>
+</body>
+</html>

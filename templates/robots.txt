@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: {{ site_origin }}{% url 'django.contrib.sitemaps.views.sitemap' %}

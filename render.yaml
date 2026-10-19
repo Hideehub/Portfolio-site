@@ -1,0 +1,36 @@
+services:
+  - type: web
+    name: portfolio
+    runtime: python
+    plan: free
+    buildCommand: ./build.sh
+    startCommand: gunicorn config.wsgi:application --bind 0.0.0.0:$PORT --access-logfile -
+    healthCheckPath: /
+    envVars:
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DEBUG
+        value: "False"
+      - key: WEB_CONCURRENCY
+        value: "2"
+      # Neon connection string (direct, not pooled), including ?sslmode=require
+      - key: DATABASE_URL
+        sync: false
+      # Only needed for a custom domain; the onrender.com hostname is added automatically.
+      - key: ALLOWED_HOSTS
+        sync: false
+      - key: CSRF_TRUSTED_ORIGINS
+        sync: false
+      # Contact form notifications (optional; messages are always saved)
+      - key: CONTACT_RECIPIENT_EMAIL
+        sync: false
+      - key: EMAIL_HOST
+        sync: false
+      - key: EMAIL_PORT
+        value: "587"
+      - key: EMAIL_HOST_USER
+        sync: false
+      - key: EMAIL_HOST_PASSWORD
+        sync: false
+      - key: DEFAULT_FROM_EMAIL
+        sync: false

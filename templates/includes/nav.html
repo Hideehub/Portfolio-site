@@ -1,0 +1,24 @@
+{% url 'portfolio:home' as home_url %}
+<header class="site-header">
+  <div class="container nav-inner">
+    <a class="brand" href="{{ home_url }}"><span class="brand-mark" aria-hidden="true">AR</span>{{ profile.name }}</a>
+
+    <button class="icon-button nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" hidden>
+      {% include "includes/icon.html" with name="menu" %}
+      <span class="visually-hidden">Menu</span>
+    </button>
+
+    <nav id="site-nav" class="site-nav" aria-label="Main">
+      <ul>
+        <li><a href="{{ home_url }}#projects">Work</a></li>
+        <li><a href="{{ home_url }}#about">About</a></li>
+        <li><a href="{{ home_url }}#contact">Contact</a></li>
+      </ul>
+    </nav>
+
+    <button class="icon-button theme-toggle" type="button" aria-label="Toggle dark mode" aria-pressed="false" hidden>
+      <span class="icon-moon">{% include "includes/icon.html" with name="moon" %}</span>
+      <span class="icon-sun">{% include "includes/icon.html" with name="sun" %}</span>
+    </button>
+  </div>
+</header>

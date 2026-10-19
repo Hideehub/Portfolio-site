@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ project.title }} · {{ profile.name }}{% endblock %}
+{% block meta_description %}{{ project.summary }}{% endblock %}
+{% block og_type %}article{% endblock %}
+{% block og_title %}{{ project.title }}{% endblock %}
+{% block og_description %}{{ project.summary }}{% endblock %}
+{% block og_image %}{% static project.image_path %}{% endblock %}
+
+{% block content %}
+<article class="section project-detail">
+  <div class="container narrow">
+    <a class="back-link" href="{% url 'portfolio:home' %}#projects">{% include "includes/icon.html" with name="arrow-left" %} All projects</a>
+    <p class="section-index">Case study</p>
+    <h1 class="gradient-text">{{ project.title }}</h1>
+    <p class="lead">{{ project.summary }}</p>
+
+    <div class="project-screenshot-frame">
+      <img class="project-screenshot" src="{% static project.image_path %}" alt="Screenshot of {{ project.title }}" width="1600" height="1000" fetchpriority="high">
+    </div>
+
+    <div class="project-body">
+      {{ project.description|linebreaks }}
+    </div>
+
+    <h2>Tech stack</h2>
+    <ul class="tags">
+      {% for tech in project.tech_list %}<li>{{ tech }}</li>{% endfor %}
+    </ul>
+
+    {% if project.live_url or project.repo_url %}
+      <div class="actions">
+        {% if project.live_url %}
+          <a class="button" href="{{ project.live_url }}" target="_blank" rel="noopener">{% include "includes/icon.html" with name="external" %} View live site<span class="visually-hidden"> (opens in a new tab)</span></a>
+        {% endif %}
+        {% if project.repo_url %}
+          <a class="button button-ghost" href="{{ project.repo_url }}" target="_blank" rel="noopener">{% include "includes/icon.html" with name="code" %} View code<span class="visually-hidden"> (opens in a new tab)</span></a>
+        {% endif %}
+      </div>
+    {% endif %}
+  </div>
+</article>
+{% endblock %}

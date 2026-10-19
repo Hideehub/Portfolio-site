@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}Page not found · {{ profile.name }}{% endblock %}
+{% block meta_description %}The page you were looking for doesn't exist.{% endblock %}
+
+{% block content %}
+<section class="section error-page">
+  <div class="container narrow">
+    <p class="eyebrow">Error 404</p>
+    <h1>Page not found</h1>
+    <p class="lead">The page you were looking for doesn't exist or has moved.</p>
+    <a class="button" href="{% url 'portfolio:home' %}">{% include "includes/icon.html" with name="arrow-left" %} Back to home</a>
+  </div>
+</section>
+{% endblock %}
